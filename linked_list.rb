@@ -45,6 +45,7 @@ class LinkedList
   def shift()
     current = @head
     @head = current.next_node
+    @length-=1
     # show new LL
     @head
   end
@@ -53,6 +54,7 @@ class LinkedList
     current = @head
     @head.value = value
     @head.next_node = current
+    @length+=1
     # show new LL
     @head
   end
@@ -90,9 +92,8 @@ class LinkedList
         i -= 1
       end
       current.next_node = Node.new(revArray[i])
+      @tail = current.next_node
     end
-    # return reversed array
-    @head
   end
 
 end
@@ -114,7 +115,7 @@ end
 describe LinkedList do
   it "has a head" do
     ll = LinkedList.new
-    expect(ll.head).to eql(nil)
+    expect(ll.head).to be_nil
     ll.add(1)
     expect(ll.head.value).to eq(1)
   end
@@ -172,4 +173,46 @@ describe LinkedList do
     end
     expect(ll.length).to eql(11)
   end
+
+  it "reverses" do
+    ll = LinkedList.new
+
+    ll.add("thefirst")
+    expect(ll.length).to eql(1)
+
+    10.times do |i|
+      ll.add(i)
+    end
+    ll.reverseUgly
+    expect(ll.head.value).to eql(9)
+    expect(ll.tail.value).to eql("thefirst")
+  end
+
+  it "adds to front with unshift" do
+    ll = LinkedList.new
+
+    ll.add("thefirst")
+
+    10.times do |i|
+      ll.add(i)
+    end
+    ll.reverseUgly
+    ll.unshift(2)
+    expect(ll.length).to eql(12)
+    expect(ll.head.value).to eql(2)
+  end
+
+  it "removes from front with shift" do
+    ll = LinkedList.new
+
+    ll.add("thefirst")
+    ll.add("thesecond")
+    ll.add("thethird")
+
+    ll.reverseUgly
+    ll.shift
+    expect(ll.length).to eql(2)
+    expect(ll.head.value).to eql("thesecond")
+  end
+
 end
